@@ -1,7 +1,7 @@
 const User = require("../models/userSchema");
 const bcrypt = require("bcryptjs");
 const validate = require("../config/validator");
-
+const { generateToken } = require("../utils/generateToken")
 //create a new user
 
 const createUser = async (req, res)=>{
@@ -11,13 +11,22 @@ const createUser = async (req, res)=>{
 
      if (valid) {
          const hashedPassword = await bcrypt.hash(valid.password, 10);
-         const user = new User({
+         const user = await User.create({
              username,
              email,
              password:hashedPassword,
          });
-         await user.save();
+        
+          if (user) {
+            res.status(201).json({
+              username: user.username,
+              email: user.email,
+              id: user._id,
+              token:generateToken(user._id),  
+                
+            });
 
+          }
          res.status(201).json({
              massage: "User create successfully",
              user,
@@ -25,7 +34,7 @@ const createUser = async (req, res)=>{
      } else {
          res.status(400).json({
              massage: "Invalid data",
-         })
+         });
      }
 };
 module.exports = {

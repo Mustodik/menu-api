@@ -1,4 +1,5 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const { string } = require("yup");
 
 const userSchema = mongoose.Schema({
    username:{
