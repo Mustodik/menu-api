@@ -3,6 +3,7 @@ const morgan = require("morgan")
 require("dotenv").config()
 const connectDB = require("./config/connectDB")
 const foodRoute = require("./routes/foodRoutes")
+const userRoute = require("./routes/userRoute")
 
 const app = express()
 
@@ -11,8 +12,9 @@ connectDB()
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(foodRoute)
+app.use("/api/users", userRoute)
 
-const PORT = process.env.PORT||9000
+const PORT = process.env.PORT||9000;
 
 //Home route
 app.get("/", (req, res) =>{
@@ -20,5 +22,5 @@ app.get("/", (req, res) =>{
 })
 
 app.listen(PORT, () =>{
-    console.log("server is up")
+    console.log("Server Is Runing")
 })
